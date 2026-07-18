@@ -3,7 +3,9 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
+from email.mime.nonmultipart import MIMENonMultipart
 from email import encoders
+from email.header import Header
 from datetime import date
 from config import SMTP_EMAIL, SMTP_PASSWORD, RECIPIENT_EMAIL
 
@@ -103,9 +105,9 @@ def send_daily_email(
     msg = MIMEMultipart()
     msg["From"] = SMTP_EMAIL
     msg["To"] = RECIPIENT_EMAIL
-    msg["Subject"] = subject
-    msg.attach(MIMEText(html_body, "html"))
-    msg.attach(MIMEText(text_body, "plain"))
+    msg["Subject"] = Header(subject, "utf-8")
+    msg.attach(MIMEText(html_body, "html", "utf-8"))
+    msg.attach(MIMEText(text_body, "plain", "utf-8"))
 
     for d in drafted:
         for key in ["cv_path", "cover_letter_path"]:

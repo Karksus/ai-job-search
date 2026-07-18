@@ -56,6 +56,7 @@ Edit `.env` with your credentials:
 # Gmail SMTP (free, no domain needed)
 SMTP_EMAIL=your-email@gmail.com
 SMTP_PASSWORD=your-16-char-app-password
+RECIPIENT_EMAIL=your-email@gmail.com
 
 # LLM
 OPENAI_API_KEY=your-openai-api-key

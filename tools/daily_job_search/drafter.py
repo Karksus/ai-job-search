@@ -19,6 +19,34 @@ NO_FABRICATION_RULE = "Every claim must match the candidate profile exactly. Do 
 LATEX_BULLET_RULE = 'For the "bullets" field, return plain text strings. Do NOT include LaTeX commands like \\item or \\textbf. Just return the label and description separated by a colon. Example: "Pipeline validation: Reduced variant calling time from hours to minutes"'
 
 
+def _extract_profile_info(profile_text: str) -> dict:
+    info = {}
+    for line in profile_text.splitlines():
+        line = line.strip()
+        # Strip markdown bold markers
+        clean = line.replace("**", "")
+        if clean.startswith("- Name:"):
+            name = clean.split(":", 1)[1].strip()
+            parts = name.split()
+            info["first_name"] = parts[0] if parts else ""
+            info["last_name"] = " ".join(parts[1:]) if len(parts) > 1 else ""
+        elif clean.startswith("- Location:"):
+            info["country"] = clean.split(":", 1)[1].strip()
+        elif clean.startswith("- Email:"):
+            info["email"] = clean.split(":", 1)[1].strip()
+        elif clean.startswith("- LinkedIn:"):
+            url = clean.split(":", 1)[1].strip()
+            if not url.startswith("http"):
+                url = "https://" + url
+            info["linkedin_url"] = url
+        elif clean.startswith("- Github:"):
+            url = clean.split(":", 1)[1].strip()
+            if not url.startswith("http"):
+                url = "https://" + url
+            info["github_url"] = url
+    return info
+
+
 def _call_llm(prompt: str, max_tokens: int = 4000) -> str:
     response = client.chat.completions.create(
         model=OPENAI_MODEL,
@@ -89,6 +117,9 @@ Return a JSON object with these fields:
   - Do NOT fabricate any experience or skills not in the profile.
   - Bullets should be plain text, no LaTeX formatting.
 - "education": array of objects, each with "degree", "institution", "location", "dates", "detail" (1 sentence, plain text)
+- "certifications": array of strings, each a certification name (only include if the profile has them)
+- "publications": array of strings, each a publication citation (only include if relevant to the role)
+- "languages": array of strings, each "Language: Level" (only include if relevant to the role)
 
 Return ONLY the JSON object, no markdown fencing, no explanation."""
 
@@ -137,16 +168,23 @@ Return ONLY the JSON object, no markdown fencing, no explanation."""
     return _parse_json(content)
 
 
-def _build_cv_latex(content: dict) -> str:
+def _build_cv_latex(content: dict, profile_info: dict) -> str:
     template = CV_TEMPLATE.read_text()
 
+    template = template.replace("FIRSTNAME", _sanitize_latex(profile_info.get("first_name", "")))
+    template = template.replace("LASTNAME", _sanitize_latex(profile_info.get("last_name", "")))
+    template = template.replace("COUNTRY", _sanitize_latex(profile_info.get("country", "")))
+    template = template.replace("EMAIL", _sanitize_latex(profile_info.get("email", "")))
+    template = template.replace("LINKEDINURL", profile_info.get("linkedin_url", "#"))
+    template = template.replace("GITHUBURL", profile_info.get("github_url", "#"))
+
     profile = content.get("profile_statement", "")
-    template = template.replace("{{PROFILE_STATEMENT}}", _sanitize_latex(profile))
+    template = template.replace("PROFILESTATEMENT", _sanitize_latex(profile))
 
     comps = []
     for c in content.get("competencies", []):
         comps.append(f"\\item \\textbf{{{_sanitize_latex(c)}}}")
-    template = template.replace("{{COMPETENCIES}}", "\n".join(comps))
+    template = template.replace("COMPETENCIES", "\n".join(comps))
 
     exp_blocks = []
     for role in content.get("experience", []):
@@ -172,7 +210,7 @@ def _build_cv_latex(content: dict) -> str:
 \\end{{itemize}}}}}}"""
         exp_blocks.append(block)
 
-    template = template.replace("{{EXPERIENCE}}", "\n\n".join(exp_blocks))
+    template = template.replace("EXPERIENCE", "\n\n".join(exp_blocks))
 
     edu_blocks = []
     for edu in content.get("education", []):
@@ -184,17 +222,32 @@ def _build_cv_latex(content: dict) -> str:
         block = f"""\\item{{\\cventry{{{dates}}}{{{degree}}}{{{inst}}}{{{loc}}}{{}}{{{detail}}}}}"""
         edu_blocks.append(block)
 
-    template = template.replace("{{EDUCATION}}", "\n\n".join(edu_blocks))
+    template = template.replace("EDUCATION", "\n\n".join(edu_blocks))
+
+    for section in ["CERTIFICATIONS", "PUBLICATIONS", "LANGUAGES"]:
+        items = content.get(section.lower(), [])
+        if items:
+            blocks = []
+            for item in items:
+                blocks.append(f"\\item {_sanitize_latex(item)}")
+            template = template.replace(section, "\n".join(blocks))
+        else:
+            template = template.replace(section, f"\\item{{{_sanitize_latex(section.title())} not applicable.}}" if section == "CERTIFICATIONS" else f"\\item{{{_sanitize_latex(section.title())} available upon request.}}")
 
     return template
 
 
-def _build_cover_letter_latex(content: dict) -> str:
+def _build_cover_letter_latex(content: dict, profile_info: dict) -> str:
     template = COVER_LETTER_TEMPLATE.read_text()
 
-    template = template.replace("{{SALUTATION}}", content.get("salutation", "Dear Hiring Manager,"))
-    template = template.replace("{{OPENING_PARAGRAPH}}", _sanitize_latex(content.get("opening_paragraph", "")))
-    template = template.replace("{{BODY_PARAGRAPH}}", _sanitize_latex(content.get("body_paragraph", "")))
+    template = template.replace("FIRSTNAME", _sanitize_latex(profile_info.get("first_name", "")))
+    template = template.replace("LASTNAME", _sanitize_latex(profile_info.get("last_name", "")))
+    template = template.replace("EMAIL", _sanitize_latex(profile_info.get("email", "")))
+    template = template.replace("LINKEDINURL", profile_info.get("linkedin_url", "#"))
+
+    template = template.replace("SALUTATION", content.get("salutation", "Dear Hiring Manager,"))
+    template = template.replace("OPENING_PARAGRAPH", _sanitize_latex(content.get("opening_paragraph", "")))
+    template = template.replace("BODY_PARAGRAPH", _sanitize_latex(content.get("body_paragraph", "")))
 
     raw_bullets = content.get("bullets", [])
     latex_bullets = []
@@ -205,10 +258,10 @@ def _build_cover_letter_latex(content: dict) -> str:
             latex_bullets.append(f"\\item \\textbf{{{_sanitize_latex(label.strip())}:}} {_sanitize_latex(desc.strip())}")
         else:
             latex_bullets.append(f"\\item {_sanitize_latex(b.strip())}")
-    template = template.replace("{{BULLETS}}", "\n".join(latex_bullets))
+    template = template.replace("BULLETS", "\n".join(latex_bullets))
 
-    template = template.replace("{{COMPANY_PARAGRAPH}}", _sanitize_latex(content.get("company_paragraph", "")))
-    template = template.replace("{{CLOSING_PARAGRAPH}}", _sanitize_latex(content.get("closing_paragraph", "")))
+    template = template.replace("COMPANY_PARAGRAPH", _sanitize_latex(content.get("company_paragraph", "")))
+    template = template.replace("CLOSING_PARAGRAPH", _sanitize_latex(content.get("closing_paragraph", "")))
 
     return template
 
@@ -276,6 +329,9 @@ def _check_page_count(pdf_path: Path, expected: int) -> bool:
 
 def draft_documents(job: dict, output_dir: Path) -> dict:
     profile = (Path(__file__).parent.parent.parent / "CLAUDE.md").read_text()
+    profile_info = _extract_profile_info(profile)
+    if not profile_info.get("first_name"):
+        log.warning("Could not extract profile info from CLAUDE.md, using empty placeholders")
     company_slug = re.sub(r"[^a-z0-9]+", "_", job.get("company", "unknown").lower()).strip("_")
     role_slug = re.sub(r"[^a-z0-9]+", "_", job.get("title", "role").lower()).strip("_")
 
@@ -294,7 +350,7 @@ def draft_documents(job: dict, output_dir: Path) -> dict:
 
     try:
         cv_content = generate_cv_content(job, profile)
-        cv_tex = _build_cv_latex(cv_content)
+        cv_tex = _build_cv_latex(cv_content, profile_info)
         cv_tex_path = output_dir / f"cv_{company_slug}_{role_slug}.tex"
         cv_tex_path.write_text(cv_tex)
 
@@ -314,7 +370,7 @@ def draft_documents(job: dict, output_dir: Path) -> dict:
 
     try:
         cl_content = generate_cover_letter_content(job, profile)
-        cl_tex = _build_cover_letter_latex(cl_content)
+        cl_tex = _build_cover_letter_latex(cl_content, profile_info)
         cl_tex_path = output_dir / f"cl_{company_slug}_{role_slug}.tex"
         cl_tex_path.write_text(cl_tex)
 
