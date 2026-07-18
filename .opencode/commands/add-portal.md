@@ -1,3 +1,7 @@
+---
+description: Scaffold a new job-portal search skill — investigates portal, generates CLI, tests live
+---
+
 # /add-portal - Generate a Job-Portal Search Skill for Your Local Market
 
 You are helping the user build a job-portal search skill for a job board in their market. The repo ships worked examples of the pattern (four Danish portals plus the country-agnostic `linkedin-search`), and the README invites users elsewhere to build equivalents — this command turns that invitation into a guided workflow: investigate the portal, scaffold the skill from the canonical structure, and test-run a live query before registering anything.

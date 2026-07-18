@@ -106,11 +106,14 @@ Write 5-7 lines that function as an "elevator pitch": a concise, compelling intr
 **Create 2-3 profile statement templates for your main role types:**
 
 <!-- SETUP: These are populated based on your background -->
-**For [YOUR_PRIMARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_1]
+**For Bioinformatics / Genomics roles:**
+> Bioinformatician with over five years of experience in oncology research, molecular biology, bioinformatics, and large-scale data analysis. Currently working at Genesis Genomics, the largest genomics center in Latin America, contributing to projects that integrate advanced analytics with clinical applications. Strong background in translational research, data-driven decision-making, and cross-functional collaboration, focused on delivering insights for diagnostics and precision medicine.
 
-**For [YOUR_SECONDARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_2]
+**For Cloud/AWS in Life Sciences roles:**
+> AWS Certified Solutions Architect with hands-on experience deploying cloud-based bioinformatics infrastructure. Currently building and validating NGS analysis pipelines on AWS at Genesis Genomics, leveraging services like S3, Lambda, EC2, ECS, and Batch. Combines deep domain expertise in genomics and oncology with strong cloud computing skills to deliver scalable, automated solutions for precision medicine.
+
+**For Data Science roles:**
+> Data scientist with a PhD in genomics and an MBA in Data Science and Analytics, combining deep domain expertise in bioinformatics and oncology with strong analytical and programming skills. Experienced in developing end-to-end data pipelines, from raw sequencing data to actionable insights, using Python, R, and cloud-based AWS infrastructure. Passionate about transforming complex biological data into healthcare solutions.
 
 ### Core Competencies / Skills Section (Best Practice)
 Reorder and emphasize based on the role. Use bold category labels.

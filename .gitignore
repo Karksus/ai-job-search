@@ -19,11 +19,12 @@ venv/
 *.fdb_latexmk
 
 # Personal data (never commit these)
+.env
+tools/daily_job_search/.env
 salary_data.json
 job_scraper/seen_jobs.json
 job_scraper/*.md
 *_BehavioralReport.pdf
-linkedin_Profile.pdf
 
 # Personal photos and signatures
 *.jpg
@@ -63,6 +64,8 @@ documents/applications/**
 
 # Personal job search tracking
 job_search_tracker.csv
+tools/daily_job_search/seen_jobs.db
+tools/daily_job_search/run_daily.sh
 
 # Upskill reports (personal output)
 upskill/*.md
@@ -72,6 +75,3 @@ upskill/*.md
 .agents/**/node_modules/
 .agents/**/*.log
 .agents/usage/
-
-# Brainstorm mockups (superpowers visual companion) - never ship
-.superpowers/

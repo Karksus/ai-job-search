@@ -1,0 +1,8 @@
+#!/bin/bash
+# Example cron wrapper — copy to run_daily.sh and adjust paths.
+#
+# Cron runs with a minimal PATH that doesn't include ~/.bun/bin.
+# This script exports it so bun is available for the job portal CLIs.
+export PATH="$HOME/.bun/bin:$PATH"
+cd "$(dirname "$0")"
+/usr/bin/python3 main.py >> /tmp/job_search.log 2>&1

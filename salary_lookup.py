@@ -190,16 +190,6 @@ def match_score_optimized(q_norm, q_ang, q_words_set, q_words_ang_set, query, en
     return 0
 
 
-def match_score(query, entry_name):
-    """Compute a match score between 0 and 100 for ranking results."""
-    q_norm = normalize(query)
-    q_ang = anglicize(q_norm)
-    q_words = extract_core_words(query)
-    q_words_set = set(q_words)
-    q_words_ang_set = {anglicize(w) for w in q_words}
-    return match_score_optimized(q_norm, q_ang, q_words_set, q_words_ang_set, query, entry_name)
-
-
 def search_company(data, query, city=None):
     """Search for a company by name. Returns matching entries sorted by relevance."""
     companies = data.get("companies", [])

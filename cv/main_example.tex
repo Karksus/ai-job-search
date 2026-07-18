@@ -1,8 +1,8 @@
-%% Example CV - [YOUR_NAME]
-%% Comprehensive overview of all competencies, experience, and achievements.
-%% Use as a master reference when tailoring role-specific CVs.
+%% Pedro Serio - CV
+%% Cloud Solutions Architect | Bioinformatics Infrastructure Engineer
+%% Master reference CV with all competencies, experience, and achievements.
+%% Use as source when building targeted CVs.
 %%
-%% SETUP: Run /setup to populate this with your actual information.
 %% Compile with: lualatex main_example.tex
 %% (pdflatex often fails on modern MiKTeX with fontawesome5 font-expansion errors.)
 
@@ -24,18 +24,18 @@
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=blue,
-    pdftitle={[YOUR_NAME] - CV},
+    pdftitle={Pedro Serio - CV},
     pdfpagemode=FullScreen,
 }
-\usepackage[scale=0.80]{geometry}
+\usepackage[scale=0.77]{geometry}
 \usepackage{import}
 
 % personal data
-\name{[First]}{[Last]}
-\address{[Your Address, City, Country]}{}{}
-\phone[mobile]{[+XX XXXXXXXXXX]}
-\email{[your.email@example.com]}
-\extrainfo{\href{[https://linkedin.com/in/your-profile]}{LinkedIn}, \href{[https://github.com/your-username]}{GitHub}}
+\name{Pedro}{Serio}
+\address{S\~{a}o Paulo, Brazil}{}{}
+\phone[mobile]{+55 11 99999-9999}
+\email{pedroaserio@gmail.com}
+\extrainfo{\href{https://linkedin.com/in/pedro-serio}{LinkedIn}, \href{https://github.com/pedro-serio}{GitHub}}
 
 \begin{document}
 
@@ -46,7 +46,7 @@
 % ============================================================
 
 \vspace{6pt}
-\small{[Write a 3-5 line profile statement tailored to the role you're applying for. Focus on what makes you uniquely qualified. Example: "Data scientist with a PhD in [field] and X years of industry experience. Combines deep domain expertise in [domain] with strong applied machine learning and Python development skills. Experienced in developing end-to-end ML pipelines, from data ingestion to stakeholder-facing dashboards."]}
+\small{Results-driven Cloud Solutions Architect and Bioinformatics Infrastructure Engineer with over 5 years of experience architecting, scaling, and automating production-grade, high-throughput data pipelines and event-driven cloud systems. AWS Certified Solutions Architect with deep expertise in Python backend development, AWS Cloud Architecture, and translating complex, data-intensive workflows into reliable, distributed microservices. Combines strong computational infrastructure skills with domain expertise in genomics, oncology, and precision medicine.}
 
 % ============================================================
 %     CORE COMPETENCIES
@@ -56,16 +56,26 @@
 \vspace{1pt}
 \begin{itemize}
 
-\item \textbf{[Skill Category 1]}: [Specific skills, frameworks, tools. Be concrete.]
+\item \textbf{Cloud Architecture \& Infrastructure}: AWS (Lambda, ECS, S3, EC2, Batch, DynamoDB, SNS, SQS, IAM, DataSync, CDK), Serverless Architecture, Event-Driven Systems, Microservices, Hybrid Cloud (On-Premises + AWS)
 
-\item \textbf{[Skill Category 2]}: [Specific skills, frameworks, tools.]
+\item \textbf{Backend \& Automation}: Python (Advanced), Bash/Shell Scripting, Linux/Unix Operations, CI/CD Pipeline Automation, Clean Code Principles, Defensive Design Patterns
 
-\item \textbf{[Skill Category 3]}: [Specific skills, frameworks, tools.]
+\item \textbf{Data Pipelines \& Orchestration}: Nextflow, WDL, High-Throughput Processing, Automated Bioinformatics Pipelines, Large-Scale Data Infrastructure
 
-\item \textbf{[Skill Category 4]}: [Domain expertise, methods, approaches.]
+\item \textbf{Bioinformatics \& Genomics}: NGS Analysis, Variant Calling (Illumina DRAGEN), Translational Research, Precision Medicine, Oncogenomics, Variant Interpretation Platforms (Emedgene, Franklin, Varstation)
 
-\item \textbf{[Skill Category 5]}: [Tools, platforms, software.]
+\item \textbf{Platform \& Tooling}: LIMS Integration, Data Version Control (Git), NoSQL (DynamoDB), VS Code, Illumina Platforms (iSeq, NextSeq, NovaSeq 6000, NovaSeq X+)
 
+\end{itemize}
+
+% ============================================================
+%     CERTIFICATIONS
+% ============================================================
+
+\section{Certifications}
+\vspace{1pt}
+\begin{itemize}
+\item{\textbf{AWS Certified Solutions Architect -- Associate} (SAA-C03), Amazon Web Services, 2025}
 \end{itemize}
 
 % ============================================================
@@ -76,32 +86,51 @@
 \vspace{3pt}
 \begin{itemize}
 
-% --- Most Recent Role ---
-\item{\cventry{[YYYY--Present]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+% --- Genesis Genomics R&D ---
+\item{\cventry{2025--Present}{Cloud Infrastructure \& Automation Engineer (R\&D Team)}{Genesis Genomics}{S\~{a}o Paulo, Brazil}{}{\vspace{1pt}
 \begin{itemize}
-    \item [Achievement or responsibility 1 - be specific, use numbers where possible]
-    \item [Achievement or responsibility 2]
-    \item [Achievement or responsibility 3]
-    \item [Achievement or responsibility 4]
+    \item Architect, deploy, and validate highly scalable, cloud-native (AWS) and hybrid on-premises automation platforms, applying robust distributed computing patterns to handle multi-terabyte genomic datasets.
+    \item Engineer and maintain custom analytical microservices and Python-based internal toolkits, leveraging serverless cloud triggers (Lambda, SNS, SQS) to streamline background execution and data ingestion flows.
+    \item Implement and validate bioinformatics pipelines (Illumina DRAGEN) across cloud and on-premises infrastructure, reducing variant calling time from hours to minutes.
+    \item Apply Clean Code principles and defensive design patterns to complex production data pipelines, optimizing execution runtime, system maintainability, and pipeline reliability.
 \end{itemize}}}
 
 \vspace{3pt}
 
-% --- Previous Role ---
-\item{\cventry{[YYYY--YYYY]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+% --- Genesis Genomics Operations ---
+\item{\cventry{2024--2025}{Cloud Systems \& Operations Analyst (Operational Team)}{Genesis Genomics}{S\~{a}o Paulo, Brazil}{}{\vspace{1pt}
 \begin{itemize}
-    \item [Achievement or responsibility 1]
-    \item [Achievement or responsibility 2]
-    \item [Achievement or responsibility 3]
+    \item Provided critical tier support, performance tuning, and incident troubleshooting for high-throughput data servers and infrastructure platforms under strict operational SLAs.
+    \item Managed daily AWS cloud environment operations (S3, IAM, DataSync, Lambda, CLI), ensuring stringent data security compliance, identity and access management, and optimized asset transfer workflows.
+    \item Led technical cross-functional initiatives to integrate internal laboratory information management systems (LIMS) with platform APIs, automating end-to-end service order data synchronization.
+    \item Administered variant analysis platforms (Emedgene, Franklin, Varstation) and operated Illumina sequencers (iSeq, NextSeq, NovaSeq 6000, NovaSeq X+) with 99.9\% uptime.
 \end{itemize}}}
 
 \vspace{3pt}
 
-% --- Earlier Role ---
-\item{\cventry{[YYYY--YYYY]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+% --- Grupo Fleury ---
+\item{\cventry{2023--2024}{Systems \& Data Analyst}{Grupo Fleury -- Genomics Center}{S\~{a}o Paulo, Brazil}{}{\vspace{1pt}
 \begin{itemize}
-    \item [Achievement or responsibility 1]
-    \item [Achievement or responsibility 2]
+    \item Managed and optimized technical data workflows, ensuring quality control across large-scale sample inputs and computational data processing.
+    \item Developed and maintained analytical tools for genomic data processing and quality assurance.
+\end{itemize}}}
+
+\vspace{3pt}
+
+% --- PhD ---
+\item{\cventry{2018--2023}{PhD Scientist \& Data Developer}{Oncology Translational Research Center (CTO/ICESP)}{S\~{a}o Paulo, Brazil}{}{\vspace{1pt}
+\begin{itemize}
+    \item Developed custom scripts (Python/R) for large-scale oncogenomics data analysis, handling complex databases and extracting actionable insights for precision medicine.
+    \item Performed NGS sequencing, bioinformatics analysis, and statistical interpretation for translational oncology research.
+    \item Mentored junior researchers and led training initiatives in bioinformatics and molecular oncology.
+\end{itemize}}}
+
+\vspace{3pt}
+
+% --- UNIFESP ---
+\item{\cventry{2014--2016}{Laboratory Assistant}{Federal University of S\~{a}o Paulo (UNIFESP)}{S\~{a}o Paulo, Brazil}{}{\vspace{1pt}
+\begin{itemize}
+    \item Supported molecular biology research projects, gaining foundational experience in laboratory techniques and data management.
 \end{itemize}}}
 
 \end{itemize}
@@ -114,16 +143,64 @@
 \vspace{1pt}
 \begin{itemize}
 
-\item{\cventry{[YYYY--YYYY]}{[Degree] in [Field]}{[Institution]}{[City, Country]}{}{\vspace{1pt}
-Thesis: ``[Thesis Title].'' [Brief description of research focus.]
+\item{\cventry{2023--2025}{MBA in Data Science and Analytics}{ESALQ/USP}{S\~{a}o Paulo, Brazil}{}{\vspace{1pt}
+Data science, analytics, machine learning, and business intelligence.
 }}
 
 \vspace{3pt}
 
-\item{\cventry{[YYYY--YYYY]}{[Degree] in [Field]}{[Institution]}{[City, Country]}{}{\vspace{1pt}
-[Brief description or key topics.]
+\item{\cventry{2018--2023}{PhD in Genomics and Transcriptomics in Oncology}{FMUSP/ICESP}{S\~{a}o Paulo, Brazil}{}{\vspace{1pt}
+Thesis: ``Somatic Mutational Profiling and Computational Analysis in Oncogenomics.'' Focus on data-driven mutational profiling and computational analysis for precision medicine.
 }}
 
+\vspace{3pt}
+
+\item{\cventry{2017--2018}{Specialization in Cancer Molecular Biology}{FMUSP/ICESP}{S\~{a}o Paulo, Brazil}{}{\vspace{1pt}
+Cancer biology, molecular techniques, and translational research methods.
+}}
+
+\vspace{3pt}
+
+\item{\cventry{2012--2016}{Bachelor's Degree in Biomedical Science (Molecular Biology)}{UNIP}{S\~{a}o Paulo, Brazil}{}{\vspace{1pt}
+Molecular biology, cell biology, and biomedical sciences.
+}}
+
+\end{itemize}
+
+% ============================================================
+%     PROFESSIONAL TRAINING
+% ============================================================
+
+\section{Professional Training}
+\vspace{1pt}
+\begin{itemize}
+\item Architecting on AWS -- Fast Lane (2025)
+\item Data Science in Python -- Michigan State University (2022)
+\item Bioinformatic Methods (Data Processing) -- University of Toronto (2021)
+\end{itemize}
+
+% ============================================================
+%     TEACHING \& LEADERSHIP
+% ============================================================
+
+\section{Teaching \& Leadership}
+\vspace{1pt}
+\begin{itemize}
+\item{\textbf{VI Course in Molecular Oncology} -- ICESP (2021): Organizing Committee Member and Lecturer. Introduced genomics, data structures, and bioinformatics concepts to researchers.
+}
+\end{itemize}
+
+% ============================================================
+%     PUBLICATIONS
+% ============================================================
+
+\section{Selected Publications}
+\vspace{1pt}
+\begin{itemize}
+\item Rodrigues LM et al. (2024). Prevalence of germline variants in Brazilian pancreatic carcinoma patients. \textit{Scientific Reports} (Nature).
+\item Serio PAMP et al. (2021). Somatic Mutational Profile of High-Grade Serous Ovarian Carcinoma and Triple-Negative Breast Carcinoma in Young and Elderly Patients. \textit{Cells}.
+\item Katayama MLH et al. (2019). Stromal Cell Signature Associated with Response to Neoadjuvant Chemotherapy in Locally Advanced Breast Cancer. \textit{Cells}.
+\item Encinas G et al. (2018). Somatic Mutations in Early-Onset Luminal Breast Cancer. \textit{Oncotarget}.
 \end{itemize}
 
 % ============================================================
@@ -133,27 +210,7 @@ Thesis: ``[Thesis Title].'' [Brief description of research focus.]
 \section{Languages}
 \vspace{1pt}
 \begin{itemize}
-\item [Language 1] (native), [Language 2] (fluent), [Language 3] (intermediate).
-\end{itemize}
-
-% ============================================================
-%     PUBLICATIONS (optional)
-% ============================================================
-
-\section{Publications}
-\vspace{1pt}
-\begin{itemize}
-\item [Author(s)] ([Year]). [Title]. [Journal/Conference]. \href{[DOI_URL]}{DOI link}
-\end{itemize}
-
-% ============================================================
-%     HONORS AND AWARDS (optional)
-% ============================================================
-
-\section{Honors and Awards}
-\vspace{1pt}
-\begin{itemize}
-\item{\textbf{[Award Name]} -- [Event/Organization] ([Year]).}
+\item Portuguese (native), English (fluent), Spanish (basic).
 \end{itemize}
 
 % ============================================================

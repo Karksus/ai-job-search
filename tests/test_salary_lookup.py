@@ -1,4 +1,4 @@
-"""Tests for salary_lookup.py — format_entry, match_score, and search_company."""
+"""Tests for salary_lookup.py — format_entry, match_score_optimized, and search_company."""
 
 import io
 import tempfile
@@ -12,10 +12,20 @@ from salary_lookup import (
     normalize,
     anglicize,
     extract_core_words,
-    match_score,
+    match_score_optimized,
     search_company,
     validate_data,
 )
+
+
+def match_score(query, entry_name):
+    """Local test helper matching the deleted public API."""
+    q_norm = normalize(query)
+    q_ang = anglicize(q_norm)
+    q_words = extract_core_words(query)
+    q_words_set = set(q_words)
+    q_words_ang_set = {anglicize(w) for w in q_words}
+    return match_score_optimized(q_norm, q_ang, q_words_set, q_words_ang_set, query, entry_name)
 
 
 # ---------------------------------------------------------------------------

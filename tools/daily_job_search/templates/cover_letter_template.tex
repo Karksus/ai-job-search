@@ -1,0 +1,48 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cover Letter Template
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[]{cover}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\rfoot{Page \thepage \hspace{0pt}}
+\thispagestyle{empty}
+\renewcommand{\headrulewidth}{0pt}
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     TITLE NAME
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\namesection{}{\Huge{[YOUR_FIRST_NAME] [YOUR_LAST_NAME]}}{  \href{mailto:[YOUR_EMAIL]}{[YOUR_EMAIL]} |  \urlstyle{same}\href{[YOUR_LINKEDIN_URL]}{LinkedIn}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     MAIN COVER LETTER CONTENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\currentdate{\today}
+\lettercontent{Dear {{SALUTATION}},}
+
+\lettercontent{{{OPENING_PARAGRAPH}}}
+
+\lettercontent{{{BODY_PARAGRAPH}}}
+
+{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont
+\begin{itemize}
+{{BULLETS}}
+\end{itemize}\par}
+\vspace{4pt}
+
+\lettercontent{{{COMPANY_PARAGRAPH}}}
+
+\lettercontent{{{CLOSING_PARAGRAPH}}}
+
+\begin{flushright}
+\closing{Sincerely,}
+
+\signature{[YOUR_FIRST_NAME] [YOUR_LAST_NAME]}
+\end{flushright}
+\end{document}

@@ -16,9 +16,9 @@ How well do the required/preferred skills align with the candidate's capabilitie
 | 40-59 | Partial match, significant upskilling needed |
 | 0-39 | Fundamental mismatch |
 
-**Strong match areas:** [YOUR_PRIMARY_SKILLS]
-**Moderate match areas:** [YOUR_SECONDARY_SKILLS]
-**Weak match areas:** [SKILLS_YOU_LACK]
+**Strong match areas:** Bioinformatics, NGS analysis, cloud computing (AWS), molecular biology, data science, Python, R, Bash, Nextflow, WDL, Illumina platforms, variant analysis, translational research, oncology
+**Moderate match areas:** Software engineering best practices, DevOps/MLOps, large-scale data pipelines, machine learning
+**Weak match areas:** Clinical bioinformatics regulatory compliance, software development lifecycle, frontend/backend development
 
 ### 2. Experience Match (0-100)
 Does work history align with what they're looking for?
@@ -30,9 +30,9 @@ Does work history align with what they're looking for?
 | 40-59 | Adjacent experience, would need to make the case |
 | 0-39 | Unrelated experience |
 
-**Strong:** [YOUR_DIRECT_EXPERIENCE_DOMAINS]
-**Moderate:** [YOUR_ADJACENT_EXPERIENCE]
-**Entry-level:** [ROLES_WITH_LIMITED_EXPERIENCE]
+**Strong:** Bioinformatics analysis, NGS pipeline development, variant analysis, cloud-based bioinformatics (AWS), genomics research, translational research
+**Moderate:** Data science, software engineering, DevOps, MLOps
+**Entry-level:** Clinical bioinformatics, regulatory affairs, product management
 
 ### 3. Behavioral/Culture Fit (0-100)
 Does the role and company culture match the behavioral profile?
@@ -63,19 +63,20 @@ Does this role advance career goals and contain tasks that energize?
 | 0-39 | Dead end or backwards step |
 
 **Career goals:**
-- [YOUR_CAREER_GOAL_1]
-- [YOUR_CAREER_GOAL_2]
-- [YOUR_CAREER_GOAL_3]
+- Advance in bioinformatics and genomics, particularly in precision medicine
+- Leverage AWS cloud computing skills for scalable bioinformatics solutions
+- Transition from academic research to industry roles in biotech/healthtech
+- Apply computational expertise to real-world healthcare challenges
 
 **Motivation filter:** Evaluate not just whether you *can* do the tasks, but whether the tasks will *energize* you. Consider:
-- Tasks that energize: [YOUR_ENERGIZING_TASKS]
-- Tasks that drain: [YOUR_DRAINING_TASKS]
-- Non-task factors: leadership style, department culture, company values, degree of autonomy
+- Tasks that energize: Building bioinformatics pipelines, analyzing genomic data, cloud architecture, translational research, working with NGS data, solving complex biological problems
+- Tasks that drain: Pure administrative work, repetitive manual tasks, roles without technical depth
+- Non-task factors: Research-oriented culture, collaborative teams, focus on impact, opportunities for learning
 
 **Life situation alignment:** Consider personal constraints:
-- **Security**: [YOUR_FINANCIAL_SITUATION_CONTEXT]
-- **Flexibility**: [YOUR_SCHEDULE_CONSTRAINTS]
-- **Professional development**: [YOUR_GROWTH_PRIORITIES]
+- **Security:** Currently employed at Genesis Genomics, looking for growth opportunities
+- **Flexibility:** Open to remote work, based in São Paulo
+- **Professional development:** AWS certification completed, MBA in progress, seeking industry experience
 
 ### 6. Salary Benchmark (Optional)
 

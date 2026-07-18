@@ -1,10 +1,10 @@
-# Job Application Assistant for [YOUR_NAME]
+# Job Application Assistant for Pedro Serio
 
 <!-- SETUP: This file is populated by running /setup -->
 <!-- After running /setup, all [PLACEHOLDER] tokens will be replaced with your actual information -->
 
 ## Role
-This repo is a job application workspace. Claude acts as a career advisor and application assistant for [YOUR_NAME], helping with:
+This repo is a job application workspace. The AI assistant acts as a career advisor and application assistant for Pedro Serio, helping with:
 1. **Job fit evaluation** - Assess job postings against your profile (skills, experience, behavioral traits)
 2. **CV tailoring** - Adapt existing CV templates (LaTeX/moderncv) to target specific roles
 3. **Cover letter writing** - Draft targeted cover letters using existing templates (LaTeX)
@@ -13,68 +13,98 @@ This repo is a job application workspace. Claude acts as a career advisor and ap
 
 ## Candidate Profile
 
-<!-- This section is auto-populated by /setup. You can also fill it in manually. -->
-
 ### Identity
-- **Name:** [YOUR_NAME]
-- **Location:** [YOUR_CITY], [YOUR_COUNTRY] ([YOUR_COMMUTE_CONSTRAINTS])
-- **Languages:** [YOUR_LANGUAGES]
-- **Status:** [YOUR_EMPLOYMENT_STATUS]
-- **LinkedIn headline:** "[YOUR_LINKEDIN_HEADLINE]"
+- **Name:** Pedro Serio
+- **Location:** São Paulo, Brazil
+- **Languages:** Portuguese (native), English (fluent), Spanish (basic)
+- **Status:** Employed (Bioinformatics Analyst at Genesis Genomics)
+- **LinkedIn:** www.linkedin.com/in/pedro-serio-708a4a140
+- **Github:** https://github.com/Karksus
+- **Email:** pedroaserio@gmail.com
 
 ### Education
-<!-- List your degrees, most recent first -->
-- **[DEGREE_LEVEL] in [FIELD]** ([YEAR_START]-[YEAR_END]) - [INSTITUTION]
-  - Thesis: "[THESIS_TITLE]"
-  - Topics: [KEY_TOPICS]
+- **MBA in Data Science and Analytics** (2023–2025) - ESALQ/USP
+- **PhD in Genomics and Transcriptomics in Oncology** (2018–2023) - FMUSP/ICESP
+  - Thesis: "Mutational Profile of Young Adult Triple-Negative Breast Cancer Patients"
+  - Topics: Oncogenomics, NGS, bioinformatics, translational research
+- **Specialization in Cancer Molecular Biology** (2017–2018) - FMUSP/ICESP
+- **Scientific Initiation in Cancer Molecular Biology** (2016) - UNIFESP
+- **Bachelor's Degree in Biomedical Science (Molecular Biology)** (2012–2016) - UNIP
 
 ### Professional Experience
-<!-- List your roles, most recent first -->
-- **[JOB_TITLE]** ([START_DATE] - [END_DATE]) - **[COMPANY]** ([LOCATION])
-  - [KEY_RESPONSIBILITY_1]
-  - [KEY_RESPONSIBILITY_2]
-  - [KEY_ACHIEVEMENT]
+- **Cloud Infrastructure & Automation Engineer – R&D Team** (2025–Present) - **Genesis Genomics** (São Paulo, Brazil)
+  - Architect, deploy, and validate highly scalable, cloud-native (AWS) and hybrid on-premises automation platforms, applying robust distributed computing patterns to handle multi-terabyte genomic datasets.
+  - Engineer and maintain custom analytical microservices and Python-based internal toolkits, leveraging serverless cloud triggers (Lambda, SNS, SQS) to streamline background execution and data ingestion flows.
+  - Implement and validate bioinformatics pipelines (Illumina DRAGEN) across cloud and on-premises infrastructure, reducing variant calling time from hours to minutes.
+  - Apply Clean Code principles and defensive design patterns to complex production data pipelines, optimizing execution runtime, system maintainability, and pipeline reliability.
+
+- **Cloud Systems & Operations Analyst – Operational Team** (2024–2025) - **Genesis Genomics** (São Paulo, Brazil)
+  - Provided critical tier support, performance tuning, and incident troubleshooting for high-throughput data servers and infrastructure platforms under strict operational SLAs.
+  - Managed daily AWS cloud environment operations (S3, IAM, DataSync, Lambda, CLI), ensuring stringent data security compliance, identity and access management, and optimized asset transfer workflows.
+  - Led technical cross-functional initiatives to integrate internal laboratory information management systems (LIMS) with platform APIs, automating end-to-end service order data synchronization.
+  - Administered variant analysis platforms (Emedgene, Franklin, Varstation) and operated Illumina sequencers (iSeq, NextSeq, NovaSeq 6000, NovaSeq X+) with 99.9% uptime.
+
+- **Systems & Data Analyst** (2023–2024) - **Grupo Fleury – Genomics Center** (São Paulo, Brazil)
+
+- **PhD Scientist & Data Developer** (2018–2023) - **Oncology Translational Research Center (CTO/ICESP)** (São Paulo, Brazil)
+
+- **Laboratory Assistant** (2014–2016) - **Federal University of São Paulo (UNIFESP)** (São Paulo, Brazil)
 
 ### Technical Skills
-- **Primary:** [YOUR_PRIMARY_SKILLS]
-- **Secondary:** [YOUR_SECONDARY_SKILLS]
-- **Domain:** [YOUR_DOMAIN_EXPERTISE]
-- **Software:** [YOUR_TOOLS_AND_SOFTWARE]
+- **Primary:** Bioinformatics, cloud computing (AWS), molecular biology, NGS, data science, data analytics
+- **Programming:** Python, R, Bash
+- **Workflow management:** Nextflow, WDL
+- **Operating systems:** Linux, Windows, macOS
+- **Software & platforms:** VS Code, Notepad++, Microsoft Office, REDCap, Tasy (Philips)
+- **AWS services:** S3, Lambda, EC2, ECS, Batch, DynamoDB, SNS, SQS, IAM
+- **Laboratory techniques:** NGS library preparation, DNA/RNA extraction, qPCR, Laser Capture Microdissection
 
 ### Certifications
-<!-- List relevant certifications with dates -->
-- **[CERTIFICATION_NAME]** - [HOURS]h - completed [DATE]
+- **AWS Certified Solutions Architect – Associate (SAA-C03)** - Amazon Web Services, 2025
 
 ### Publications
-<!-- List peer-reviewed publications, if any -->
-- [AUTHOR_LIST] ([YEAR]). [TITLE]. [JOURNAL].
+- Rodrigues LM et al. Prevalence of germline variants in Brazilian pancreatic carcinoma patients. Sci Rep (Nature), 2024.
+- Serio PAMP et al. Somatic Mutational Profile of High-Grade Serous Ovarian Carcinoma and Triple-Negative Breast Carcinoma in Young and Elderly Patients. Cells, 2021.
+- Katayama MLH et al. Stromal Cell Signature Associated with Response to Neoadjuvant Chemotherapy in Locally Advanced Breast Cancer. Cells, 2019.
+- Encinas G et al. Somatic Mutations in Early-Onset Luminal Breast Cancer. Oncotarget, 2018.
 
-### Awards
-<!-- List relevant awards, hackathons, competitions -->
-- [AWARD_NAME] - [EVENT] ([YEAR])
+### Book Chapter
+- Invasion and Metastasis. In: Oncology: From the Molecule to the Clinic. 2022.
+
+### Teaching Experience
+- VI Course in Molecular Oncology – ICESP (2021): Organizing Committee member, Lecturer (Invasion and Metastasis in Cancer, Introduction to Genomics and Transcriptomics in Bioinformatics)
+
+### Courses & Professional Training
+- Architect in AWS – Fast Lane (2025)
+- AWS Certified Solutions Architect Associate – SAA-C03 (2025)
+- Bioinformatics for Biologists – Wellcome Connecting (2023)
+- Data Science in Python – Michigan State University (2022)
+- Bioinformatic Methods I – University of Toronto (2021)
+- Introduction to Biostatistics – ICESP-FMUSP (2019)
 
 ### Behavioral Profile
-<!-- Your behavioral assessment results (PI, DISC, Myers-Briggs, or self-assessment) -->
-- **[TRAIT_1]** - [DESCRIPTION]
-- **[TRAIT_2]** - [DESCRIPTION]
-- **Strengths:** [YOUR_STRENGTHS]
-- **Growth areas:** [YOUR_GROWTH_AREAS]
-- **Thrives in:** [YOUR_IDEAL_ENVIRONMENT]
+- **Analytical thinker** - Strong background in research and data analysis
+- **Cross-functional collaborator** - Experience working in multidisciplinary teams
+- **Detail-oriented** - Essential for bioinformatics pipeline validation and quality control
+- **Strengths:** Technical expertise in NGS and bioinformatics, AWS cloud computing, translational research
+- **Growth areas:** Industry experience, software engineering best practices
+- **Thrives in:** Research-oriented environments, data-driven decision-making, precision medicine
 
 ### What Excites You
-<!-- What motivates you professionally -->
-- [PASSION_1]
-- [PASSION_2]
+- Translating complex biological data into actionable healthcare solutions
+- Applying computational expertise to industry challenges in genomics and precision medicine
+- Cloud-based solutions for bioinformatics at scale
 
 ### Target Sectors
-<!-- Industries and companies you're targeting -->
-- [SECTOR_1]: [EXAMPLE_COMPANIES]
-- [SECTOR_2]: [EXAMPLE_COMPANIES]
+- Genomics and precision medicine: Genesis Genomics, Illumina, Foundation Medicine
+- Biotech/pharma: Roche, Novartis, AstraZeneca
+- Healthtech: Philips, Tempus, Guardant Health
+- Cloud/AWS in life sciences: AWS Health, Google Cloud Life Sciences
 
 ### Deal-breakers
-<!-- Hard constraints on job search -->
-- [DEALBREAKER_1]
-- [DEALBREAKER_2]
+- Roles requiring on-site work without relocation support in a city far from São Paulo
+- Positions without focus on data analysis, bioinformatics, or cloud infrastructure
+- Purely managerial roles with no technical depth
 
 ## Repo Structure
 - `cv/` - LaTeX CV variants (moderncv template, banking style)
@@ -88,8 +118,6 @@ This repo is a job application workspace. Claude acts as a career advisor and ap
 3. If good fit: create targeted CV (`cv/main_<company>.tex`) and cover letter (`cover_letters/cover_<company>_<role>.tex`)
 4. **Verify both documents** (see Verification Checklist below)
 5. Prepare interview talking points based on the role requirements and your strengths
-
-**Important:** When mentioning agentic coding or AI tooling in CVs/cover letters, explicitly reference **Claude Code** by name.
 
 ## Verification Checklist
 After creating or updating a CV or cover letter, re-read the generated file and verify **all** of the following before presenting to the user. Report the results as a pass/fail checklist.
@@ -115,7 +143,6 @@ After creating or updating a CV or cover letter, re-read the generated file and 
 ### Quality
 - [ ] No LaTeX syntax errors (balanced braces, correct commands)
 - [ ] No spelling or grammar errors
-- [ ] Agentic coding / AI tooling references mention **Claude Code** by name
 - [ ] Cover letter is addressed to the correct person (or "Dear Hiring Manager" if unknown)
 - [ ] Cover letter fits approximately one page
 

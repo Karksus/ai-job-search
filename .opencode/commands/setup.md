@@ -1,3 +1,7 @@
+---
+description: Profile onboarding — collect info and populate all profile files, CV template, and search queries
+---
+
 # /setup - Profile Onboarding
 
 You are running the onboarding setup for the AI Job Search framework. Your goal is to collect the user's professional information and populate all profile files so the `/apply` workflow works out of the box.
