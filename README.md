@@ -62,6 +62,9 @@ RECIPIENT_EMAIL=your-email@gmail.com
 OPENAI_API_KEY=your-openai-api-key
 OPENAI_MODEL=gpt-4o-mini
 OPENAI_BASE_URL=https://api.openai.com/v1
+
+# Optional: ignore specific employers (comma-separated, case-insensitive)
+IGNORED_EMPLOYERS="Crossing Hurdles,Some Other Agency"
 ```
 
 **Getting a Gmail App Password:**
@@ -106,6 +109,16 @@ Add this line to run daily at 9pm (adjust path to your repo):
 - On each run, previously seen jobs are skipped
 - Jobs are marked as "sent" after successful email delivery
 - The database tracks: title, company, score, fit, first/last seen, email sent status
+
+### Ignoring employers
+
+Add a comma-separated list of employer names to ignore in `.env`:
+
+```env
+IGNORED_EMPLOYERS="Crossing Hurdles,Another Agency"
+```
+
+Jobs from these employers are filtered out before evaluation, saving LLM calls. Matching is case-insensitive.
 
 ### Email format
 

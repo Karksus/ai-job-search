@@ -78,19 +78,6 @@ Adjacent role combining data skills + domain knowledge.
 "precision medicine" "data scientist" remote
 ```
 
-### Priority 6: Broader Technical / Consulting (Brazil + Remote)
-
-Wider net for general technical roles.
-
-```
-"data engineer" São Paulo
-"python developer" bioinformatics Brazil
-"scientific computing" Brazil
-"bioinformatics consultant" Brazil
-"data engineer" remote life sciences
-"cloud engineer" remote healthcare
-```
-
 ## Location Filter
 
 When evaluating results, verify the job location meets criteria:

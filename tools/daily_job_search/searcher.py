@@ -2,7 +2,7 @@ import json
 import subprocess
 import logging
 from pathlib import Path
-from config import PORTALS
+from config import PORTALS, IGNORED_EMPLOYERS
 
 log = logging.getLogger(__name__)
 
@@ -79,6 +79,14 @@ def search_all() -> list[dict]:
                     seen_ids.add(jid)
                     job["source"] = "freehire"
                     all_jobs.append(job)
+
+    if IGNORED_EMPLOYERS:
+        before = len(all_jobs)
+        all_jobs = [
+            j for j in all_jobs
+            if j.get("company", "").lower() not in IGNORED_EMPLOYERS
+        ]
+        log.info(f"Filtered {before} → {len(all_jobs)} jobs (ignored employers: {IGNORED_EMPLOYERS})")
 
     log.info(f"Total unique jobs found: {len(all_jobs)}")
     return all_jobs

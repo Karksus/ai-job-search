@@ -16,6 +16,12 @@ OPENAI_MODEL = os.getenv("OPENAI_MODEL_NAME", os.getenv("OPENAI_MODEL", "gpt-4o"
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 MAX_JOBS = int(os.getenv("MAX_JOBS", "10"))
 
+IGNORED_EMPLOYERS = [
+    name.strip().lower()
+    for name in os.getenv("IGNORED_EMPLOYERS", "").split(",")
+    if name.strip()
+]
+
 CV_TEMPLATE = ROOT / "templates" / "cv_template.tex"
 COVER_LETTER_TEMPLATE = ROOT / "templates" / "cover_letter_template.tex"
 CLAUDE_MD = REPO_ROOT / "CLAUDE.md"
