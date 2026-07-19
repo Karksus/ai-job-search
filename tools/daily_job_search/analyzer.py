@@ -72,6 +72,7 @@ Rules:
 - Be honest about gaps. Do not inflate scores.
 - Focus on: bioinformatics, NGS, AWS/cloud, Python/R/Bash, pipeline development, data engineering
 - Consider location: Brazil and international remote are preferred. On-site far from Sao Paulo is a negative.
+- CRITICAL: The candidate is based in São Paulo, Brazil and does NOT have US work authorization. Jobs requiring "legally authorized to work in the USA", "without sponsorship", "US work authorization required", or similar visa/legal restrictions must be rated "low" with score below 30. This is a hard dealbreaker — the candidate cannot relocate to the US without visa sponsorship.
 - Return ONLY the JSON array, no markdown, no explanation outside the array.
 
 Return the JSON array now:"""

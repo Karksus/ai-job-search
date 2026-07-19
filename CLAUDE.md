@@ -105,6 +105,7 @@ This repo is a job application workspace. The AI assistant acts as a career advi
 - Roles requiring on-site work without relocation support in a city far from São Paulo
 - Positions without focus on data analysis, bioinformatics, or cloud infrastructure
 - Purely managerial roles with no technical depth
+- Jobs requiring US work authorization without visa sponsorship (candidate is based in Brazil, does not have US work authorization)
 
 ## Repo Structure
 - `cv/` - LaTeX CV variants (moderncv template, banking style)
