@@ -5,4 +5,15 @@
 # This script exports it so bun is available for the job portal CLIs.
 export PATH="$HOME/.bun/bin:$PATH"
 cd "$(dirname "$0")"
-/usr/bin/python3 main.py >> /tmp/job_search.log 2>&1
+
+# Run for a specific profile:
+#   /usr/bin/python3 main.py --profile pedro >> /tmp/job_search.log 2>&1
+#   /usr/bin/python3 main.py --profile ana >> /tmp/job_search.log 2>&1
+#
+# Run for all profiles:
+#   /usr/bin/python3 main.py --all >> /tmp/job_search.log 2>&1
+#
+# List available profiles:
+#   /usr/bin/python3 main.py --list
+
+/usr/bin/python3 main.py --all >> /tmp/job_search.log 2>&1

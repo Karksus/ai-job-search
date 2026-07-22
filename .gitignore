@@ -65,7 +65,10 @@ documents/applications/**
 # Personal job search tracking
 job_search_tracker.csv
 tools/daily_job_search/seen_jobs.db
+tools/daily_job_search/seen_jobs_*.db
 tools/daily_job_search/run_daily.sh
+tools/daily_job_search/profiles.json
+tools/daily_job_search/profiles/
 
 # Upskill reports (personal output)
 upskill/*.md

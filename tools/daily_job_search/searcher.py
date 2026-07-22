@@ -2,7 +2,7 @@ import json
 import subprocess
 import logging
 from pathlib import Path
-from config import PORTALS, IGNORED_EMPLOYERS
+from config import PORTALS, GLOBAL_IGNORED_EMPLOYERS
 
 log = logging.getLogger(__name__)
 
@@ -33,34 +33,11 @@ def run_cli(portal: str, args: list[str]) -> dict | None:
         return None
 
 
-LINKEDIN_QUERIES = [
-    {"args": ["-q", "bioinformatics", "-l", "Sao Paulo, Brazil", "--jobage", "14"]},
-    {"args": ["-q", "bioinformatics", "-l", "Remote", "--jobage", "14"]},
-    {"args": ["-q", "genomics", "-l", "Sao Paulo, Brazil", "--jobage", "14"]},
-    {"args": ["-q", "bioinformatics engineer", "-l", "Remote", "--jobage", "14"]},
-    {"args": ["-q", "cloud engineer", "-l", "Sao Paulo, Brazil", "--jobage", "14"]},
-    {"args": ["-q", "AWS", "-l", "Sao Paulo, Brazil", "--jobage", "14", "--remote"]},
-    {"args": ["-q", "data engineer", "-l", "Sao Paulo, Brazil", "--jobage", "14"]},
-    {"args": ["-q", "NGS", "-l", "Remote", "--jobage", "14"]},
-    {"args": ["-q", "bioinformatics", "-l", "Brazil", "--jobage", "14"]},
-    {"args": ["-q", "precision medicine", "-l", "Remote", "--jobage", "14"]},
-]
-
-FREEHIRE_QUERIES = [
-    {"args": ["-q", "bioinformatics", "--jobage", "14", "--limit", "25"]},
-    {"args": ["-q", "genomics", "--jobage", "14", "--limit", "25"]},
-    {"args": ["-q", "bioinformatics", "--remote", "--jobage", "14", "--limit", "25"]},
-    {"args": ["-q", "NGS pipeline", "--jobage", "14", "--limit", "25"]},
-    {"args": ["-q", "cloud engineer", "--category", "ml_ai", "--jobage", "14", "--limit", "25"]},
-    {"args": ["-q", "AWS life sciences", "--jobage", "14", "--limit", "25"]},
-]
-
-
-def search_all() -> list[dict]:
+def search_all(queries: dict, ignored_employers: list[str] | None = None) -> list[dict]:
     seen_ids = set()
     all_jobs = []
 
-    for q in LINKEDIN_QUERIES:
+    for q in queries.get("linkedin", []):
         data = run_cli("linkedin", q["args"])
         if data and "results" in data:
             for job in data["results"]:
@@ -70,7 +47,7 @@ def search_all() -> list[dict]:
                     job["source"] = "linkedin"
                     all_jobs.append(job)
 
-    for q in FREEHIRE_QUERIES:
+    for q in queries.get("freehire", []):
         data = run_cli("freehire", q["args"])
         if data and "results" in data:
             for job in data["results"]:
@@ -80,13 +57,17 @@ def search_all() -> list[dict]:
                     job["source"] = "freehire"
                     all_jobs.append(job)
 
-    if IGNORED_EMPLOYERS:
+    combined_ignore = set(GLOBAL_IGNORED_EMPLOYERS)
+    if ignored_employers:
+        combined_ignore.update(e.lower() for e in ignored_employers)
+
+    if combined_ignore:
         before = len(all_jobs)
         all_jobs = [
             j for j in all_jobs
-            if j.get("company", "").lower() not in IGNORED_EMPLOYERS
+            if (j.get("company") or "").lower() not in combined_ignore
         ]
-        log.info(f"Filtered {before} → {len(all_jobs)} jobs (ignored employers: {IGNORED_EMPLOYERS})")
+        log.info(f"Filtered {before} -> {len(all_jobs)} jobs (ignored employers: {combined_ignore})")
 
     log.info(f"Total unique jobs found: {len(all_jobs)}")
     return all_jobs

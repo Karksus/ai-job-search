@@ -7,8 +7,6 @@ from email.mime.nonmultipart import MIMENonMultipart
 from email import encoders
 from email.header import Header
 from datetime import date
-from config import SMTP_EMAIL, SMTP_PASSWORD, RECIPIENT_EMAIL
-
 log = logging.getLogger(__name__)
 
 SMTP_HOST = "smtp.gmail.com"
@@ -19,20 +17,29 @@ def send_daily_email(
     ranked_jobs: list[dict],
     drafted: list[dict],
     output_dir: str,
+    recipient_email: str,
+    profile_name: str = "",
+    smtp_email: str = "",
+    smtp_password: str = "",
 ) -> bool:
-    if not SMTP_EMAIL or not SMTP_PASSWORD:
-        log.error("SMTP credentials not configured")
+    if not smtp_email or not smtp_password:
+        log.error("SMTP credentials not configured for this profile")
+        return False
+
+    if not recipient_email:
+        log.error("No recipient email configured for this profile")
         return False
 
     today = date.today().isoformat()
-    subject = f"Daily Job Search - {today} - {len(ranked_jobs)} jobs found"
+    name_label = f" ({profile_name})" if profile_name else ""
+    subject = f"Daily Job Search{name_label} - {today} - {len(ranked_jobs)} jobs found"
 
     strong = [j for j in ranked_jobs if j.get("fit") == "strong"]
     medium = [j for j in ranked_jobs if j.get("fit") == "medium"]
     low = [j for j in ranked_jobs if j.get("fit") == "low"]
 
     html_parts = [
-        f"<h2>Daily Job Search Report - {today}</h2>",
+        f"<h2>Daily Job Search Report{name_label} - {today}</h2>",
         f"<p><strong>{len(ranked_jobs)} jobs found</strong>: "
         f"{len(strong)} strong, {len(medium)} medium, {len(low)} low fit</p>",
     ]
@@ -86,7 +93,7 @@ def send_daily_email(
     html_body = "\n".join(html_parts)
 
     text_parts = [
-        f"Daily Job Search Report - {today}",
+        f"Daily Job Search Report{name_label} - {today}",
         f"{len(ranked_jobs)} jobs found: {len(strong)} strong, {len(medium)} medium, {len(low)} low",
         "",
     ]
@@ -103,8 +110,8 @@ def send_daily_email(
     text_body = "\n".join(text_parts)
 
     msg = MIMEMultipart()
-    msg["From"] = SMTP_EMAIL
-    msg["To"] = RECIPIENT_EMAIL
+    msg["From"] = smtp_email
+    msg["To"] = recipient_email
     msg["Subject"] = Header(subject, "utf-8")
     msg.attach(MIMEText(html_body, "html", "utf-8"))
     msg.attach(MIMEText(text_body, "plain", "utf-8"))
@@ -127,9 +134,9 @@ def send_daily_email(
     try:
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
             server.starttls()
-            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.login(smtp_email, smtp_password)
             server.send_message(msg)
-        log.info(f"Email sent to {RECIPIENT_EMAIL}")
+        log.info(f"Email sent from {smtp_email} to {recipient_email}")
         return True
     except Exception as e:
         log.error(f"Email send failed: {e}")

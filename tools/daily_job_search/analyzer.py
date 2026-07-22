@@ -1,13 +1,12 @@
 import json
 import logging
 from openai import OpenAI
-from config import OPENAI_API_KEY, OPENAI_MODEL, OPENAI_BASE_URL, CLAUDE_MD, WRITING_STYLE, MAX_JOBS
+from config import OPENAI_API_KEY, OPENAI_MODEL, OPENAI_BASE_URL, WRITING_STYLE, MAX_JOBS
 
 log = logging.getLogger(__name__)
 
 client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL)
 
-PROFILE = CLAUDE_MD.read_text()
 WRITING_RULES = WRITING_STYLE.read_text() if WRITING_STYLE.exists() else ""
 
 
@@ -23,7 +22,7 @@ def _build_search_summary(jobs: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def evaluate_jobs(jobs: list[dict]) -> list[dict]:
+def evaluate_jobs(jobs: list[dict], profile: str) -> list[dict]:
     if not jobs:
         return []
 
@@ -36,19 +35,19 @@ def evaluate_jobs(jobs: list[dict]) -> list[dict]:
 
     for i in range(0, len(jobs), batch_size):
         batch = jobs[i:i + batch_size]
-        batch_results = _evaluate_batch(batch, i, jobs)
+        batch_results = _evaluate_batch(batch, i, jobs, profile)
         all_results.extend(batch_results)
 
     return all_results
 
 
-def _evaluate_batch(jobs: list[dict], offset: int, all_jobs: list[dict]) -> list[dict]:
+def _evaluate_batch(jobs: list[dict], offset: int, all_jobs: list[dict], profile: str) -> list[dict]:
     summary = _build_search_summary(jobs)
 
     prompt = f"""You are a job fit evaluator. Below is the candidate's profile and a list of job postings.
 
 CANDIDATE PROFILE:
-{PROFILE}
+{profile}
 
 JOB LISTINGS:
 {summary}
@@ -70,9 +69,9 @@ Rules:
 - "medium" = score 50-74, partial alignment, some gaps
 - "low" = score below 50, significant gaps or misalignment
 - Be honest about gaps. Do not inflate scores.
-- Focus on: bioinformatics, NGS, AWS/cloud, Python/R/Bash, pipeline development, data engineering
-- Consider location: Brazil and international remote are preferred. On-site far from Sao Paulo is a negative.
-- CRITICAL: The candidate is based in São Paulo, Brazil and does NOT have US work authorization. Jobs requiring "legally authorized to work in the USA", "without sponsorship", "US work authorization required", or similar visa/legal restrictions must be rated "low" with score below 30. This is a hard dealbreaker — the candidate cannot relocate to the US without visa sponsorship.
+- Focus on the candidate's actual skills and experience from their profile.
+- Consider location preferences stated in the profile.
+- Jobs requiring US work authorization without sponsorship should be rated "low" with score below 30 if the candidate is based in Brazil without US work authorization.
 - Return ONLY the JSON array, no markdown, no explanation outside the array.
 
 Return the JSON array now:"""

@@ -3,11 +3,16 @@ import hashlib
 from datetime import date
 from pathlib import Path
 
-DB_PATH = Path(__file__).resolve().parent / "seen_jobs.db"
+ROOT = Path(__file__).resolve().parent
 
 
-def _init_db():
-    conn = sqlite3.connect(DB_PATH)
+def _get_db_path(profile_name: str) -> Path:
+    return ROOT / f"seen_jobs_{profile_name}.db"
+
+
+def _init_db(profile_name: str) -> sqlite3.Connection:
+    db_path = _get_db_path(profile_name)
+    conn = sqlite3.connect(db_path)
     conn.execute(
         """CREATE TABLE IF NOT EXISTS seen_jobs (
             url_hash TEXT PRIMARY KEY,
@@ -29,8 +34,8 @@ def _hash_url(url: str) -> str:
     return hashlib.sha256(url.encode()).hexdigest()[:16]
 
 
-def filter_new_jobs(jobs: list[dict]) -> list[dict]:
-    conn = _init_db()
+def filter_new_jobs(jobs: list[dict], profile_name: str) -> list[dict]:
+    conn = _init_db(profile_name)
     today = date.today().isoformat()
     new_jobs = []
 
@@ -62,8 +67,8 @@ def filter_new_jobs(jobs: list[dict]) -> list[dict]:
     return new_jobs
 
 
-def mark_sent(jobs: list[dict], score: int = None, fit: str = None):
-    conn = _init_db()
+def mark_sent(jobs: list[dict], profile_name: str, score: int = None, fit: str = None):
+    conn = _init_db(profile_name)
     today = date.today().isoformat()
 
     for job in jobs:
@@ -80,8 +85,8 @@ def mark_sent(jobs: list[dict], score: int = None, fit: str = None):
     conn.close()
 
 
-def get_stats() -> dict:
-    conn = _init_db()
+def get_stats(profile_name: str) -> dict:
+    conn = _init_db(profile_name)
     total = conn.execute("SELECT COUNT(*) FROM seen_jobs").fetchone()[0]
     sent = conn.execute("SELECT COUNT(*) FROM seen_jobs WHERE sent_email = 1").fetchone()[0]
     conn.close()

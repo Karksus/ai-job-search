@@ -29,12 +29,14 @@
 Automated pipeline that runs daily via cron:
 
 1. **Search** — queries LinkedIn and Freehire portals for jobs matching your profile
-2. **Deduplicate** — SQLite database (`seen_jobs.db`) tracks all previously seen jobs, skips duplicates
+2. **Deduplicate** — SQLite database (`seen_jobs_<person>.db`) tracks all previously seen jobs per profile
 3. **Evaluate** — LLM scores each job for fit (strong/medium/low)
 4. **Draft** — generates tailored CV + cover letter (LaTeX → PDF) for top matches
 5. **Email** — sends HTML report with ranked jobs + attached PDFs via Gmail SMTP
 
-**Output:** `~/Downloads/job_applications/YYYY-MM-DD/`
+**Output:** `~/Downloads/job_applications/<profile>/YYYY-MM-DD/`
+
+**Multi-profile:** Run for all profiles (`--all`), a specific profile (`--profile pedro`), or list profiles (`--list`).
 
 ### Setup
 
@@ -53,19 +55,41 @@ cp .env.example .env
 Edit `.env` with your credentials:
 
 ```env
-# Gmail SMTP (free, no domain needed)
+# Gmail SMTP (global fallback if profile doesn't define its own)
 SMTP_EMAIL=your-email@gmail.com
 SMTP_PASSWORD=your-16-char-app-password
-RECIPIENT_EMAIL=your-email@gmail.com
 
 # LLM
 OPENAI_API_KEY=your-openai-api-key
-OPENAI_MODEL=gpt-4o-mini
+OPENAI_MODEL=gpt-4o
 OPENAI_BASE_URL=https://api.openai.com/v1
-
-# Optional: ignore specific employers (comma-separated, case-insensitive)
-IGNORED_EMPLOYERS="Crossing Hurdles,Some Other Agency"
 ```
+
+3. **Set up profiles** — create a profile directory and add your profile:
+
+```bash
+mkdir -p tools/daily_job_search/profiles/yourname
+```
+
+Create `tools/daily_job_search/profiles/yourname/profile.md` with your candidate profile (see existing examples).
+
+Create `tools/daily_job_search/profiles/yourname/search_queries.json` with your search queries.
+
+Configure `tools/daily_job_search/profiles.json`:
+
+```json
+{
+  "yourname": {
+    "language": "en",
+    "recipient_email": "your-email@gmail.com",
+    "queries_path": "profiles/yourname/search_queries.json",
+    "smtp_email": "",
+    "smtp_password": ""
+  }
+}
+```
+
+If `smtp_email`/`smtp_password` are empty, falls back to `.env` credentials.
 
 **Getting a Gmail App Password:**
 1. Go to [myaccount.google.com/security](https://myaccount.google.com/security)
@@ -86,7 +110,16 @@ bash tools/daily_job_search/run_daily.sh
 Or run the Python script directly:
 
 ```bash
-cd tools/daily_job_search && python3 main.py
+cd tools/daily_job_search
+
+# Run for all profiles
+python3 main.py --all
+
+# Run for a specific profile
+python3 main.py --profile pedro
+
+# List available profiles
+python3 main.py --list
 ```
 
 ### Setting up the cron job
@@ -105,7 +138,7 @@ Add this line to run daily at 9pm (adjust path to your repo):
 
 ### How deduplication works
 
-- Every job is hashed by URL and stored in `seen_jobs.db`
+- Every job is hashed by URL and stored in `seen_jobs_<person>.db` per profile
 - On each run, previously seen jobs are skipped
 - Jobs are marked as "sent" after successful email delivery
 - The database tracks: title, company, score, fit, first/last seen, email sent status
@@ -198,11 +231,19 @@ tools/daily_job_search/
 ├── analyzer.py          # LLM-based job evaluation and ranking
 ├── drafter.py           # Generates CV + cover letter LaTeX → PDF
 ├── email_sender.py      # Gmail SMTP email with PDF attachments
-├── job_db.py            # SQLite deduplication database
-├── config.py            # Loads .env configuration
+├── job_db.py            # SQLite deduplication database (per-profile)
+├── config.py            # Loads .env and profiles.json configuration
 ├── run_daily.sh.example # Template for cron wrapper (copy to run_daily.sh)
 ├── run_daily.sh         # Shell wrapper for cron (gitignored, your local copy)
-├── seen_jobs.db         # Job dedup database (gitignored)
+├── seen_jobs_*.db       # Per-profile job dedup databases (gitignored)
+├── profiles.json        # Profile registry with SMTP/recipients (gitignored)
+├── profiles/            # Candidate profiles (gitignored)
+│   ├── pedro/
+│   │   ├── profile.md
+│   │   └── search_queries.json
+│   └── ana/
+│       ├── profile.md
+│       └── search_queries.json
 ├── last_run.log         # Latest run log
 └── templates/           # LaTeX templates (use [YOUR_NAME] placeholders, fill from CLAUDE.md)
 ```

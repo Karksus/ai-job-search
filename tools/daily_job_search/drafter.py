@@ -2,6 +2,7 @@ import json
 import subprocess
 import logging
 import re
+from datetime import datetime
 from pathlib import Path
 from openai import OpenAI
 from config import (
@@ -18,12 +19,50 @@ NO_PHONE_RULE = "Do NOT include any phone number in the documents."
 NO_FABRICATION_RULE = "Every claim must match the candidate profile exactly. Do NOT fabricate skills, experience, or achievements."
 LATEX_BULLET_RULE = 'For the "bullets" field, return plain text strings. Do NOT include LaTeX commands like \\item or \\textbf. Just return the label and description separated by a colon. Example: "Pipeline validation: Reduced variant calling time from hours to minutes"'
 
+SECTION_TITLES = {
+    "en": {
+        "Core Competencies": "Core Competencies",
+        "Professional Experience": "Professional Experience",
+        "Education": "Education",
+        "Certifications": "Certifications",
+        "Selected Publications": "Selected Publications",
+        "Languages": "Languages",
+        "References": "References",
+        "Available upon request.": "Available upon request.",
+    },
+    "pt-BR": {
+        "Core Competencies": "Competências Principais",
+        "Professional Experience": "Experiência Profissional",
+        "Education": "Formação Acadêmica",
+        "Certifications": "Certificações",
+        "Selected Publications": "Publicações Selecionadas",
+        "Languages": "Idiomas",
+        "References": "Referências",
+        "Available upon request.": "Disponível sob solicitação.",
+    },
+}
 
-def _extract_profile_info(profile_text: str) -> dict:
+MONTH_NAMES = {
+    "en": ["January", "February", "March", "April", "May", "June",
+           "July", "August", "September", "October", "November", "December"],
+    "pt-BR": ["janeiro", "fevereiro", "março", "abril", "maio", "junho",
+              "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"],
+}
+
+
+def _format_date_today(language: str) -> str:
+    today = datetime.now()
+    months = MONTH_NAMES.get(language, MONTH_NAMES["en"])
+    if language == "pt-BR":
+        return f"{today.day} de {months[today.month - 1]} de {today.year}"
+    else:
+        return f"{months[today.month - 1]} {today.day}, {today.year}"
+
+
+def extract_profile_info(profile_text: str) -> dict:
     info = {}
     for line in profile_text.splitlines():
         line = line.strip()
-        # Strip markdown bold markers
         clean = line.replace("**", "")
         if clean.startswith("- Name:"):
             name = clean.split(":", 1)[1].strip()
@@ -34,6 +73,9 @@ def _extract_profile_info(profile_text: str) -> dict:
             info["country"] = clean.split(":", 1)[1].strip()
         elif clean.startswith("- Email:"):
             info["email"] = clean.split(":", 1)[1].strip()
+        elif clean.startswith("- Phone:"):
+            phone = clean.split(":", 1)[1].strip()
+            info["phone"] = phone
         elif clean.startswith("- LinkedIn:"):
             url = clean.split(":", 1)[1].strip()
             if not url.startswith("http"):
@@ -91,17 +133,20 @@ def _sanitize_bullet(text: str) -> str:
     return text
 
 
-def generate_cv_content(job: dict, profile: str) -> dict:
+def generate_cv_content(job: dict, profile: str, language: str = "en") -> dict:
     title = job.get("title", "Unknown Role")
     company = job.get("company", "Unknown Company")
     url = job.get("url", "")
     job_summary = f"Job: {title} at {company}\nURL: {url}"
+
+    lang_rule = "Write all content in English." if language == "en" else f"Write all content in Portuguese (Brazil). Use proper Brazilian Portuguese throughout."
 
     prompt = f"""Generate tailored CV content for this job application.
 
 {NO_DASH_RULE}
 {NO_PHONE_RULE}
 {NO_FABRICATION_RULE}
+{lang_rule}
 
 CANDIDATE PROFILE:
 {profile}
@@ -127,11 +172,13 @@ Return ONLY the JSON object, no markdown fencing, no explanation."""
     return _parse_json(content)
 
 
-def generate_cover_letter_content(job: dict, profile: str) -> dict:
+def generate_cover_letter_content(job: dict, profile: str, language: str = "en") -> dict:
     title = job.get("title", "Unknown Role")
     company = job.get("company", "Unknown Company")
     url = job.get("url", "")
     job_summary = f"Job: {title} at {company}\nURL: {url}"
+
+    lang_rule = "Write all content in English." if language == "en" else f"Write all content in Portuguese (Brazil). Use proper Brazilian Portuguese throughout."
 
     prompt = f"""Generate a tailored cover letter for this job application.
 
@@ -139,6 +186,7 @@ def generate_cover_letter_content(job: dict, profile: str) -> dict:
 {NO_PHONE_RULE}
 {NO_FABRICATION_RULE}
 {LATEX_BULLET_RULE}
+{lang_rule}
 
 WRITING RULES:
 - No cliches ("I am writing to express my strong interest", "I am passionate about")
@@ -168,15 +216,29 @@ Return ONLY the JSON object, no markdown fencing, no explanation."""
     return _parse_json(content)
 
 
-def _build_cv_latex(content: dict, profile_info: dict) -> str:
+def _build_cv_latex(content: dict, profile_info: dict, language: str = "en") -> str:
     template = CV_TEMPLATE.read_text()
 
     template = template.replace("FIRSTNAME", _sanitize_latex(profile_info.get("first_name", "")))
     template = template.replace("LASTNAME", _sanitize_latex(profile_info.get("last_name", "")))
     template = template.replace("COUNTRY", _sanitize_latex(profile_info.get("country", "")))
     template = template.replace("EMAIL", _sanitize_latex(profile_info.get("email", "")))
-    template = template.replace("LINKEDINURL", profile_info.get("linkedin_url", "#"))
-    template = template.replace("GITHUBURL", profile_info.get("github_url", "#"))
+    linkedin_url = profile_info.get("linkedin_url", "")
+    github_url = profile_info.get("github_url", "")
+
+    if linkedin_url and github_url:
+        extra = f"\\href{{{linkedin_url}}}{{LinkedIn}}, \\href{{{github_url}}}{{GitHub}}"
+    elif linkedin_url:
+        extra = f"\\href{{{linkedin_url}}}{{LinkedIn}}"
+    elif github_url:
+        extra = f"\\href{{{github_url}}}{{GitHub}}"
+    else:
+        extra = ""
+
+    template = template.replace(
+        "\\extrainfo{\\href{LINKEDINURL}{LinkedIn}, \\href{GITHUBURL}{GitHub}}",
+        f"\\extrainfo{{{extra}}}" if extra else ""
+    )
 
     profile = content.get("profile_statement", "")
     template = template.replace("PROFILESTATEMENT", _sanitize_latex(profile))
@@ -234,10 +296,15 @@ def _build_cv_latex(content: dict, profile_info: dict) -> str:
         else:
             template = template.replace(section, f"\\item{{{_sanitize_latex(section.title())} not applicable.}}" if section == "CERTIFICATIONS" else f"\\item{{{_sanitize_latex(section.title())} available upon request.}}")
 
+    if language != "en":
+        titles = SECTION_TITLES.get(language, SECTION_TITLES["en"])
+        for en_title, translated in titles.items():
+            template = template.replace(en_title, translated)
+
     return template
 
 
-def _build_cover_letter_latex(content: dict, profile_info: dict) -> str:
+def _build_cover_letter_latex(content: dict, profile_info: dict, language: str = "en") -> str:
     template = COVER_LETTER_TEMPLATE.read_text()
 
     template = template.replace("FIRSTNAME", _sanitize_latex(profile_info.get("first_name", "")))
@@ -262,6 +329,11 @@ def _build_cover_letter_latex(content: dict, profile_info: dict) -> str:
 
     template = template.replace("COMPANY_PARAGRAPH", _sanitize_latex(content.get("company_paragraph", "")))
     template = template.replace("CLOSING_PARAGRAPH", _sanitize_latex(content.get("closing_paragraph", "")))
+
+    closing = "Atenciosamente," if language == "pt-BR" else "Sincerely,"
+    template = template.replace("CLOSING", closing)
+
+    template = template.replace("\\today", _format_date_today(language))
 
     return template
 
@@ -327,11 +399,11 @@ def _check_page_count(pdf_path: Path, expected: int) -> bool:
         return False
 
 
-def draft_documents(job: dict, output_dir: Path) -> dict:
-    profile = (Path(__file__).parent.parent.parent / "CLAUDE.md").read_text()
-    profile_info = _extract_profile_info(profile)
+def draft_documents(job: dict, output_dir: Path, profile_text: str, language: str = "en") -> dict:
+    profile_info = extract_profile_info(profile_text)
     if not profile_info.get("first_name"):
-        log.warning("Could not extract profile info from CLAUDE.md, using empty placeholders")
+        log.warning("Could not extract profile info from profile text, using empty placeholders")
+
     company_slug = re.sub(r"[^a-z0-9]+", "_", job.get("company", "unknown").lower()).strip("_")
     role_slug = re.sub(r"[^a-z0-9]+", "_", job.get("title", "role").lower()).strip("_")
 
@@ -349,8 +421,8 @@ def draft_documents(job: dict, output_dir: Path) -> dict:
     }
 
     try:
-        cv_content = generate_cv_content(job, profile)
-        cv_tex = _build_cv_latex(cv_content, profile_info)
+        cv_content = generate_cv_content(job, profile_text, language)
+        cv_tex = _build_cv_latex(cv_content, profile_info, language)
         cv_tex_path = output_dir / f"cv_{company_slug}_{role_slug}.tex"
         cv_tex_path.write_text(cv_tex)
 
@@ -369,8 +441,8 @@ def draft_documents(job: dict, output_dir: Path) -> dict:
         log.error(f"CV generation error: {e}")
 
     try:
-        cl_content = generate_cover_letter_content(job, profile)
-        cl_tex = _build_cover_letter_latex(cl_content, profile_info)
+        cl_content = generate_cover_letter_content(job, profile_text, language)
+        cl_tex = _build_cover_letter_latex(cl_content, profile_info, language)
         cl_tex_path = output_dir / f"cl_{company_slug}_{role_slug}.tex"
         cl_tex_path.write_text(cl_tex)
 
