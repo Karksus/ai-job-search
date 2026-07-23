@@ -35,6 +35,10 @@ PORTALS = {
         "cwd": REPO_ROOT / ".agents" / "skills" / "freehire-search" / "cli",
         "entry": "src/cli.ts",
     },
+    "geekhunter": {
+        "cwd": REPO_ROOT / ".agents" / "skills" / "geekhunter-search" / "cli",
+        "entry": "src/cli.ts",
+    },
 }
 
 LUALATEX = "lualatex"
